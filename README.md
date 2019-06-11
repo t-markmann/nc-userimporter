@@ -34,6 +34,7 @@ Screenshot:
 ## ToDo
 
 Open features, not yet implemented (help appreciated): 
+* generate QR Codes for Login into Nextcloud-App (integrated QR Code Scanner). Pattern: nc://login/user:[[username]]&password:[[password]]&server:https://[[URL]] Output: PDF file?
 * read config from CLI-input if config-file is empty; update config.xml with input values?
 * ask if users exists first: https://docs.nextcloud.com/server/15/admin_manual/configuration_user/instruction_set_for_users.html
 * add language (not necessary because of default/browser language?)
