@@ -91,7 +91,8 @@ with open(os.path.join(appdir,'users.csv'),mode='r') as csvfile:
       input("Press [ANY KEY] to confirm and end the process.")
       sys.exit(1)
     pass_anon = row[2]
-    pass_anon = pass_anon[0] + "*" * (len(pass_anon)-1) # replace password for display on CLI
+    if len(pass_anon) > 0:
+      pass_anon = pass_anon[0] + "*" * (len(pass_anon)-1) # replace password for display on CLI
     currentuser = [row[0],row[1],pass_anon,row[3],row[4],row[5],row[6]]
     usertable.append(currentuser)
 print(tabulate(usertable,headers="firstrow"))
