@@ -80,6 +80,79 @@ requestheaders = {
   'OCS-APIRequest': 'true',
 }
 
+# Mapping for umlauts and and special characters. The listed umlauts and special characters are automatically converted to a compatible spelling for the user name.
+mapping = {
+           ord(u"Ä"): u"Ae",
+           ord(u"ä"): u"ae",
+           ord(u"Ë"): u"E",
+           ord(u"ë"): u"e",
+           ord(u"Ï"): u"I",
+           ord(u"ï"): u"i",
+           ord(u"Ö"): u"Oe",
+           ord(u"ö"): u"oe",           
+           ord(u"Ü"): u"Ue",
+           ord(u"ü"): u"ue",
+           ord(u"Ÿ"): u"Y",
+           ord(u"ÿ"): u"y",
+           ord(u"ß"): u"ss",
+           ord(u"À"): u"A",
+           ord(u"Á"): u"A",
+           ord(u"Â"): u"A",
+           ord(u"Ã"): u"A",
+           ord(u"Å"): u"A",
+           ord(u"Æ"): u"Ae",
+           ord(u"Ç"): u"C",
+           ord(u"È"): u"E",
+           ord(u"É"): u"E",
+           ord(u"Ê"): u"E",
+           ord(u"Ì"): u"I",
+           ord(u"Í"): u"I",
+           ord(u"Î"): u"I",
+           ord(u"Ð"): u"D",
+           ord(u"Ñ"): u"N",
+           ord(u"Ò"): u"O",
+           ord(u"Ó"): u"O",
+           ord(u"Ô"): u"O",
+           ord(u"Õ"): u"O",
+           ord(u"Ø"): u"Oe",
+           ord(u"Œ"): u"Oe",
+           ord(u"Ù"): u"U",
+           ord(u"Ú"): u"U",
+           ord(u"Û"): u"U",
+           ord(u"Ý"): u"Y",
+           ord(u"Þ"): u"Th",
+           ord(u"à"): u"a",
+           ord(u"á"): u"a",
+           ord(u"â"): u"a",
+           ord(u"ã"): u"a",
+           ord(u"å"): u"a",
+           ord(u"æ"): u"ae",
+           ord(u"ç"): u"c",
+           ord(u"è"): u"e",
+           ord(u"é"): u"e",
+           ord(u"ê"): u"e",
+           ord(u"ì"): u"i",
+           ord(u"í"): u"i",
+           ord(u"î"): u"i",
+           ord(u"ð"): u"d",
+           ord(u"ñ"): u"n",
+           ord(u"ò"): u"o",
+           ord(u"ó"): u"o",
+           ord(u"ô"): u"o",
+           ord(u"õ"): u"o",
+           ord(u"ø"): u"oe",
+           ord(u"œ"): u"oe",
+           ord(u"ù"): u"u",
+           ord(u"ú"): u"u",
+           ord(u"û"): u"u",
+           ord(u"ý"): u"y",
+           ord(u"þ"): u"Th",
+           ord(u"Š"): u"S",
+           ord(u"š"): u"s",
+           ord(u"Č"): u"C",
+           ord(u"č"): u"c"
+           }
+
 # display expected results before executing CURL
 usertable = [["Username","Display name","Password","Email","Groups","Group admin for","Quota"]]
 with open(os.path.join(appdir,'users.csv'),mode='r') as csvfile:
@@ -93,6 +166,8 @@ with open(os.path.join(appdir,'users.csv'),mode='r') as csvfile:
     pass_anon = row[2]
     if len(pass_anon) > 0:
       pass_anon = pass_anon[0] + "*" * (len(pass_anon)-1) # replace password for display on CLI
+    line = row[0]
+    row[0] = line.translate(mapping) # convert special characters and umlauts
     currentuser = [row[0],row[1],pass_anon,row[3],row[4],row[5],row[6]]
     usertable.append(currentuser)
 print(tabulate(usertable,headers="firstrow"))
@@ -107,6 +182,8 @@ with open(os.path.join(appdir,'users.csv'),mode='r') as csvfile:
   readCSV = csv.reader(csvfile, delimiter=config_csvDelimiter)
   next(readCSV, None)  # skip the headers
   for row in readCSV:
+    line = row[0]
+    row[0] = line.translate(mapping) # convert special characters and umlauts
     print("Username:",row[0],"| Display name:",row[1],"| Password: ","*" * len(row[2]) + 
     "| Email:",row[3],"| Groups:",row[4],"| Group admin for:",row[5],"| Quota:",row[6],)
 
