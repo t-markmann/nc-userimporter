@@ -2,3 +2,4 @@ username;displayname;password;email;groups;subadmin;quota
 adoe;Alice Doe;alicepassword0001;;admin;Somegroup,Anothergroup;5 GB
 broe;Bob Roe;bobpassword0001;;Somegroup,Anothergroup;;100 MB
 csmith;;carolpassword0001;;;;
+ÅŒñšú;Åçì Œñšú;acipassword0001;;;;
