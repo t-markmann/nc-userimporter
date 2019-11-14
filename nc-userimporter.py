@@ -5,6 +5,11 @@ import requests
 import certifi
 import csv
 import string
+import qrcode
+from reportlab.lib.enums import TA_JUSTIFY
+from reportlab.lib.pagesizes import letter
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Image, PageBreak
+from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from tabulate import tabulate
 from bs4 import BeautifulSoup
 
@@ -153,6 +158,14 @@ mapping = {
            ord(u"č"): u"c"
            }
 
+# QR-Code class
+qr = qrcode.QRCode(
+    version=1,
+    error_correction=qrcode.constants.ERROR_CORRECT_L,
+    box_size=10,
+    border=4,
+)
+
 # display expected results before executing CURL
 usertable = [["Username","Display name","Password","Email","Groups","Group admin for","Quota"]]
 with open(os.path.join(appdir,'users.csv'),mode='r') as csvfile:
@@ -196,7 +209,7 @@ with open(os.path.join(appdir,'users.csv'),mode='r') as csvfile:
       ('quota', row[6])
     ]
 
-    # if value exists: append single groups to data array/list for CURL
+	# if value exists: append single groups to data array/list for CURL
     if row[4]:
       grouplist = row[4].split(config_csvDelimiterGroups) # Groups in the CSV-file are split by semicolon --> load into list
       for group in grouplist: 
@@ -207,7 +220,7 @@ with open(os.path.join(appdir,'users.csv'),mode='r') as csvfile:
       groupadminlist = row[5].split(config_csvDelimiterGroups) # Groupadmin Values in the CSV-file are split by semicolon --> load into list
       for groupadmin in groupadminlist: 
         data.append(('subadmin[]', groupadmin.strip())) # subadmin is parameter NC API
-    
+
     # perform the request
     try:
       response = requests.post(config_protocol + '://' + config_adminname + ':' + config_adminpass + '@' + 
@@ -237,7 +250,83 @@ with open(os.path.join(appdir,'users.csv'),mode='r') as csvfile:
       ' = ' + response_xmlsoup.find('message').string + "\n")
     logfile.close()
 
+    # A QR code and a PDF file are only generated if the user has been successfully created.
+    if response_xmlsoup.find('statuscode').string == "100":
+      # generate qr-code
+      qr.add_data("nc://login/user:" + row[0] + "&password:" + row[2] + "&server:https://" + config_ncUrl)
+      img = qr.make_image(fill_color="black", back_color="white")
+      img.save(row[0] + ".jpg")
+      qr.clear()
+
+      # generate pdf
+      doc = SimpleDocTemplate(row[0] + ".pdf",pagesize=letter,
+                              rightMargin=72,leftMargin=72,
+                              topMargin=72,bottomMargin=18)
+      Story=[]
+      nclogo = "Nextcloud_Logo.jpg" # nextcloud-logo
+      ncusername = row[1] # username
+      ncpassword = row[2] # password
+      nclink = config_protocol + "://" + config_ncUrl # adds nextcloud-url
+        # adds nextcloud-logo to pdf-file 
+      im = Image(nclogo, 150, 106)
+      Story.append(im)
+      Story.append(Spacer(1, 12))
+
+      styles=getSampleStyleSheet()
+      styles.add(ParagraphStyle(name='Justify', alignment=TA_JUSTIFY))
+        # adds text to pdf-file
+      ptext = '<font size=14>Hello %s,</font>' % ncusername
+      Story.append(Paragraph(ptext, styles["Justify"]))
+      Story.append(Spacer(1, 12))
+
+      ptext = '<font size=14>a Nextcloud-account has been generated for you.</font>'
+      Story.append(Paragraph(ptext, styles["Justify"]))
+      Story.append(Spacer(1, 12))    
+
+      ptext = '<font size=14>You can login with the following user data:</font>'
+      Story.append(Paragraph(ptext, styles["Normal"]))
+      Story.append(Spacer(1, 36))
+
+      ptext = '<font size=14>Link to your Nextcloud:</font>'
+      Story.append(Paragraph(ptext, styles["Normal"]))
+      Story.append(Spacer(1, 12))    
+
+      ptext = '<font size=14>%s</font>' % nclink
+      Story.append(Paragraph(ptext, styles["Normal"]))
+      Story.append(Spacer(1, 24))
+
+      ptext = '<font size=14>Username:</font>'
+      Story.append(Paragraph(ptext, styles["Normal"]))
+      Story.append(Spacer(1, 12))    
+
+      ptext = '<font size=14>%s</font>' % ncusername
+      Story.append(Paragraph(ptext, styles["Normal"]))
+      Story.append(Spacer(1, 24))
+
+      ptext = '<font size=14>Password:</font>'
+      Story.append(Paragraph(ptext, styles["Normal"]))
+      Story.append(Spacer(1, 12))    
+
+      ptext = '<font size=14>%s</font>' % ncpassword
+      Story.append(Paragraph(ptext, styles["Normal"]))
+      Story.append(Spacer(1, 24))
+
+      ptext = '<font size=14>Alternatively, you can scan the following QR-Code in the Nextcloud app:</font>'
+      Story.append(Paragraph(ptext, styles["Normal"]))
+      Story.append(Spacer(1, 24))       
+        # adds qr-code to pdf-file
+      im2 = Image(row[0] + ".jpg", 200, 200)
+      Story.append(im2)
+        # create pdf-file
+          # TODO: save pdf-file in subfolder
+      doc.build(Story)
+
+      # TODO:
+      # delete temporary qr-code-file
+      #os.remove(row[0] + ".jpg")     
+
 print("\nControl the status codes of the user creation above or in the output.log.")
 print("You should as well see the users in your Nextcloud now.")
+print("PDF-Files with login-info and qr-code has been generated for every user.")
 print("For security reasons: please delete your credentials from config.xml")
 input("Press [ANY KEY] to confirm and end the process.")
