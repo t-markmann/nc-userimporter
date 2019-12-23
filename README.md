@@ -1,14 +1,14 @@
 # nc-userimporter
 This tool creates Nextcloud users from a CSV file, which you exported from some other software or created with a spreadsheet software.
 
-Zip files with executables for Windows, MacOS, Linux available in directory [__build__](https://github.com/t-markmann/nc-userimporter/tree/master/build). If you have a Python3 environment with all the dependencies/modules installed, you can run the script without the build of course.
+Zip files with executables for Windows, MacOS, Linux available here: https://get.edudocs.org/de/assets/nc-userimporter/ - If you have a Python3 environment with all the dependencies/modules installed, you can run the script without the build of course.
 
 Screenshot:
 ![Screenshot from Windows commandline](https://github.com/t-markmann/nc-userimporter/blob/master/screenshot.png)
 
 ## Instructions
 
-1. Download and extract the zip-file for your operating system from directory [__build__](https://github.com/t-markmann/nc-userimporter/tree/master/build).
+1. Download and extract the zip-file for your operating system from https://get.edudocs.org/de/assets/nc-userimporter/
 
 2. Insert data:
     * __config.xml__: Insert your cloud-admin credentials into file _config.xml_. The user must have admin permissions in your Nextcloud.
