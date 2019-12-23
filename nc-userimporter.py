@@ -62,9 +62,9 @@ config_adminpass = config_xmlsoup.find('adminpass').string
 config_csvDelimiter = config_xmlsoup.find('csvdelimiter').string
 config_csvDelimiterGroups = config_xmlsoup.find('csvdelimitergroups').string
 
-# strip http and https from ncUrl, because people often just copy & paste including https
-config_ncUrl = config_ncUrl.strip("http://")
-config_ncUrl = config_ncUrl.strip("https://")
+# cut http and https from ncUrl, because people often just copy & paste including protocol
+config_ncUrl = config_ncUrl.replace("http://", "")
+config_ncUrl = config_ncUrl.replace("https://", "")
 
 # TODO optional: read config from input() if config.xml empty
 # print('Username of creator (admin?):') 
