@@ -37,7 +37,6 @@ print("")
 # Useful resources for contributors:
 # Nextcloud user API https://docs.nextcloud.com/server/15/admin_manual/configuration_user/instruction_set_for_users.html
 # CURL to Python request converter https://curl.trillworks.com/
-# Build with: pyinstaller --onefile nc-userimporter.py
 
 # determine if running in a build package (frozen) or from seperate python script
 frozen = 'not'
