@@ -34,6 +34,7 @@ Screenshot:
 ## ToDo
 
 Open features, not yet implemented (help appreciated): 
+* Passwords with special characters not supported?
 * DEV/TEST: accept empty password-fields, if e-mail adress is given (password-link will be sent to new users.)
 * Accept self-signed certificates, with a warning for the user. Like: https://github.com/cloudfoundry-community/cf-python-client/issues/51#issuecomment-536428838
 * generate QR Codes for Login into Nextcloud-App (integrated QR Code Scanner). Pattern: nc://login/user:[[username]]&password:[[password]]&server:https://[[URL]] Output: PDF file?
