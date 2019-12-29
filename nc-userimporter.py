@@ -66,6 +66,9 @@ config_adminname = config_xmlsoup.find('adminname').string
 config_adminpass = config_xmlsoup.find('adminpass').string
 config_csvDelimiter = config_xmlsoup.find('csvdelimiter').string
 config_csvDelimiterGroups = config_xmlsoup.find('csvdelimitergroups').string
+config_school = config_xmlsoup.find('school').string
+config_schoolgroup = config_xmlsoup.find('schoolgroup').string
+
 
 # strip http and https from ncUrl, because people often just copy & paste including https
 config_ncUrl = config_ncUrl.strip("http://")
@@ -78,7 +81,8 @@ config_ncUrl = config_ncUrl.strip("https://")
 # config_adminpass = input()
 
 config_protocol = "https" # use a secure connection!
-config_apiUrl = "/ocs/v1.php/cloud/users" # nextcloud API path, might change in the future
+config_apiUrl = "/ocs/v1.php/cloud/users" # nextcloud API path (users), might change in the future
+config_apiUrlGroups = "/ocs/v1.php/cloud/groups" # nextcloud API path (groups), might change in the future
 
 # Headers for CURL request, Nextcloud specific
 requestheaders = {
@@ -208,18 +212,36 @@ with open(os.path.join(appdir,'users.csv'),mode='r') as csvfile:
       ('email', row[3]),
       ('quota', row[6])
     ]
+    
 
-	# if value exists: append single groups to data array/list for CURL
+    # if value exists: append single groups to data array/list for CURL
     if row[4]:
       grouplist = row[4].split(config_csvDelimiterGroups) # Groups in the CSV-file are split by semicolon --> load into list
-      for group in grouplist: 
-        data.append(('groups[]', group.strip())) # groups is parameter NC API
+          # if variable 'school' = yes, remove value 'SchuelerInnen' and 'Lehrkraefte' from groups
+      if config_school == 'yes':
+        if grouplist:
+          if "SchuelerInnen" in grouplist:
+            grouplist.remove('SchuelerInnen')
+          if "Lehrkraefte" in grouplist:
+            grouplist.remove('Lehrkraefte')
+        # add usergroup which is set in config-file (config_schoolgroup)
+          grouplist.append(config_schoolgroup)
+    else:
+      grouplist = []
+      grouplist.append(config_schoolgroup)
+      # TODO: Check if groups exists, if not: create groups
+      # https://docs.nextcloud.com/server/13.0.0/admin_manual/configuration_user/instruction_set_for_groups.html
+
+    for group in grouplist: 
+     data.append(('groups[]', group.strip())) # groups is parameter NC API
 
     # if value exists: append group admin values to data array/list for CURL
-    if row[5]:
-      groupadminlist = row[5].split(config_csvDelimiterGroups) # Groupadmin Values in the CSV-file are split by semicolon --> load into list
-      for groupadmin in groupadminlist: 
-        data.append(('subadmin[]', groupadmin.strip())) # subadmin is parameter NC API
+    if not config_schoolgroup == 'SchuelerInnen':
+      if row[5]:
+        groupadminlist = row[5].split(config_csvDelimiterGroups) # Groupadmin Values in the CSV-file are split by semicolon --> load into list
+        for groupadmin in groupadminlist: 
+          data.append(('subadmin[]', groupadmin.strip())) # subadmin is parameter NC API
+    
 
     # perform the request
     try:
@@ -318,13 +340,13 @@ with open(os.path.join(appdir,'users.csv'),mode='r') as csvfile:
       im2 = Image(row[0] + ".jpg", 200, 200)
       Story.append(im2)
         # create pdf-file
-          # TODO: save pdf-file in subfolder
       doc.build(Story)
 
       # TODO:
       # delete temporary qr-code-file
       #os.remove(row[0] + ".jpg")     
-
+      #save pdf-file in subfolder
+      
 print("\nControl the status codes of the user creation above or in the output.log.")
 print("You should as well see the users in your Nextcloud now.")
 print("PDF-Files with login-info and qr-code has been generated for every user.")
