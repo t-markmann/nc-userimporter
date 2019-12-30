@@ -2,6 +2,8 @@
     <cloudurl>edudocs.de/oer</cloudurl> <!-- CHANGE THIS to your cloud domain, e.g. mycloud.mydomain.org or www.mydomain.org/mycloud (without https://) -->
     <adminname>Cloudmanager</adminname> <!-- CHANGE THIS to your cloud user, who has admin permissions-->
     <adminpass>yourPass</adminpass> <!-- CHANGE THIS to the password for that user -->
-	<csvdelimiter>;</csvdelimiter> <!-- change this to ; if you create your CSV-file with Apple Numbers -->
-	<csvdelimitergroups>,</csvdelimitergroups> <!-- change this to , if you create your CSV-file with Apple Numbers -->
+    <csvdelimiter>;</csvdelimiter> <!-- change this to ; if you create your CSV-file with Apple Numbers -->
+    <csvdelimitergroups>,</csvdelimitergroups> <!-- change this to , if you create your CSV-file with Apple Numbers -->
+    <school>yes</school> <!-- change from 'no' to 'yes' if you use this importer for school -->
+    <schoolgroup>Lehrkraefte</schoolgroup> <!-- change this to 'SchuelerInnen', 'Lehrkraefte' or another groupname you like to import. -->	
 </config>
