@@ -137,9 +137,9 @@ if not os.path.isfile(config_csvfile):
       input("Press [ANY KEY] to confirm and end the process.")     
     sys.exit(1)
 
-# strip http and https from ncUrl, because people often just copy & paste including https
-config_ncUrl = config_ncUrl.strip("http://")
-config_ncUrl = config_ncUrl.strip("https://")
+# cut http and https from ncUrl, because people often just copy & paste including protocol
+config_ncUrl = config_ncUrl.replace("http://", "")
+config_ncUrl = config_ncUrl.replace("https://", "")
 
 # TODO optional: read config from input() if config.xml empty
 # print('Username of creator (admin?):') 
