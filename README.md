@@ -39,6 +39,8 @@ Screenshot output:
 
 ## ToDo
 
+* improve documentation of features https://github.com/t-markmann/nc-userimporter/wiki#todo-documentation
+
 Open features, not yet implemented (help appreciated): 
 * Passwords with special characters not supported?
 * Accept self-signed certificates, with a warning for the user. Like: https://github.com/cloudfoundry-community/cf-python-client/issues/51#issuecomment-536428838
