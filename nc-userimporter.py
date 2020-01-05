@@ -504,7 +504,7 @@ with open(os.path.join(appdir, config_csvfile),mode='r') as csvfile:
         nclogo = "assets/EduDocs_Logo.jpg" # EduDocs-logo (if in EduDocs-mode)
       else:
         nclogo = "assets/Nextcloud_Logo.jpg" # nextcloud-logo (if in normal mode)
-      ncusername = row[1] # username
+      ncusername = row[0] # username
       ncpassword = row[2] # password
       nclink = config_protocol + "://" + config_ncUrl # adds nextcloud-url
         # adds nextcloud-logo to pdf-file 
