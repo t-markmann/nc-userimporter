@@ -1,9 +1,9 @@
-# nc-userimporter
+# About nc-userimporter
 This tool creates Nextcloud users from a CSV file, which you exported from some other software or created with a spreadsheet software.
 
 Zip files with executables for Windows, MacOS, Linux available here: https://get.edudocs.org/de/assets/nc-userimporter/ - If you have a Python3 environment with all the dependencies/modules installed, you can run the script without the build of course.
 
-Screenshot:
+Screenshot input:
 ![Screenshot from Windows commandline](https://github.com/t-markmann/nc-userimporter/blob/master/assets/screenshot.png)
 
 ## Instructions
@@ -28,6 +28,11 @@ Screenshot:
 
 4. Follow the interactive commandline instructions. Check output.log and your user overview in Nextcloud.
 
+
+## Output
+
+Screenshot output:
+![Generated PDF file with user credentials](https://github.com/t-markmann/nc-userimporter/blob/master/assets/screenshot_pdfoutput.png)
 
 ---
 
