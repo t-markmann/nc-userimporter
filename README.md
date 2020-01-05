@@ -35,12 +35,8 @@ Screenshot:
 
 Open features, not yet implemented (help appreciated): 
 * Passwords with special characters not supported?
-* DEV/TEST: accept empty password-fields, if e-mail adress is given (password-link will be sent to new users.)
 * Accept self-signed certificates, with a warning for the user. Like: https://github.com/cloudfoundry-community/cf-python-client/issues/51#issuecomment-536428838
-* generate QR Codes for Login into Nextcloud-App (integrated QR Code Scanner). Pattern: nc://login/user:[[username]]&password:[[password]]&server:https://[[URL]] Output: PDF file?
 * read config from CLI-input if config-file is empty; update config.xml with input values?
 * ask if users exists first: https://docs.nextcloud.com/server/15/admin_manual/configuration_user/instruction_set_for_users.html
 * add language (not necessary because of default/browser language?)
 * add other userdata
-* ask if new groups should be created if necessary
-
