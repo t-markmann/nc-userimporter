@@ -32,6 +32,7 @@ Screenshot input:
 ## Output
 
 Screenshot output:
+
 ![Generated PDF file with user credentials](https://github.com/t-markmann/nc-userimporter/blob/master/assets/screenshot_pdfoutput.png)
 
 ---
