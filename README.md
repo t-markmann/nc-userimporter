@@ -40,6 +40,7 @@ Screenshot output:
 ## ToDo
 
 * improve documentation of features https://github.com/t-markmann/nc-userimporter/wiki#todo-documentation
+* refactoring / clean code
 
 Open features, not yet implemented (help appreciated): 
 * Passwords with special characters not supported?
