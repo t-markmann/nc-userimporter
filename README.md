@@ -12,7 +12,7 @@ Screenshot input:
 
 2. Insert data:
     * __config.xml__: Insert your cloud-admin credentials into file _config.xml_. The user must have admin permissions in your Nextcloud.
-    * __users.csv__: Insert the user data into the file _users.csv_ or recreate it with the same columns in a spreadsheet software. (Specified groups must already exist!)
+    * __users.csv__: Insert the user data into the file _users.csv_ or recreate it with the same columns in a spreadsheet software.
 
     Avoid special characters in username and password (including german umlauts) or test if the character is allowed first.
 
@@ -26,7 +26,7 @@ Screenshot input:
 		(built and tested with macOS 10.12 Sierra)
 		__Troubleshooting__: Make sure the file is executable (https://www.qwant.com/?q=make%20file%20executable%20mac)
 
-4. Follow the interactive commandline instructions. Check output.log and your user overview in Nextcloud.
+4. Follow the interactive commandline instructions. Check output.log ("output"-folder in script-directory) and your user overview in Nextcloud.
 
 
 ## Output
