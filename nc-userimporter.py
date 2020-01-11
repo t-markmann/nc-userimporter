@@ -403,7 +403,7 @@ with open(os.path.join(appdir, config_csvfile),mode='r') as csvfile:
     for group in grouplist:
      try:
        groupresponse = requests.get(config_protocol + '://' + config_adminname + ':' + config_adminpass + '@' + 
-         config_ncUrl + config_apiUrlGroups + '?search=' + group.strip(), headers=requestheaders)
+         config_ncUrl + config_apiUrlGroups + '?search=' + group.strip(), headers=requestheaders, verify=False)
      except requests.exceptions.RequestException as e:  # handling errors
        print(e)
        print("The CURL request could not be performed.")
@@ -419,7 +419,7 @@ with open(os.path.join(appdir, config_csvfile),mode='r') as csvfile:
            'groupid':group.strip()
          }
          groupresponse = requests.post(config_protocol + '://' + config_adminname + ':' + config_adminpass + '@' + 
-           config_ncUrl + config_apiUrlGroups, headers=requestheaders, data=groupdata)
+           config_ncUrl + config_apiUrlGroups, headers=requestheaders, data=groupdata, verify=False)
        except requests.exceptions.RequestException as e:  # handling errors
          print(e)
          print("The CURL request could not be performed.")
@@ -452,7 +452,7 @@ with open(os.path.join(appdir, config_csvfile),mode='r') as csvfile:
     # perform the request
     try:
       response = requests.post(config_protocol + '://' + config_adminname + ':' + config_adminpass + '@' + 
-        config_ncUrl + config_apiUrl, headers=requestheaders, data=data)
+        config_ncUrl + config_apiUrl, headers=requestheaders, data=data, verify=False)
     except requests.exceptions.RequestException as e:  # handling errors
       print(e)
       print("The CURL request could not be performed.")
