@@ -446,8 +446,11 @@ with open(os.path.join(appdir, config_csvfile),mode='r') as csvfile:
       if row[5]:
         groupadminlist = row[5].split(config_csvDelimiterGroups) # Groupadmin Values in the CSV-file are split by semicolon --> load into list
 
-    for groupadmin in groupadminlist: 
-      data.append(('subadmin[]', groupadmin.strip())) # subadmin is parameter NC API
+    try:
+      for groupadmin in groupadminlist: 
+        data.append(('subadmin[]', groupadmin.strip())) # subadmin is parameter NC API
+    except NameError:
+      print("groupadminlist is not defined")
 
     # perform the request
     try:
