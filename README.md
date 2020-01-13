@@ -45,7 +45,7 @@ Screenshot output:
 Open features, not yet implemented (help appreciated): 
 * Passwords with special characters not supported?
 * add default language; for each user in users.csv? Or at least to config.xml. Else new users will always get english welcome mails.
-* Accept self-signed certificates, with a warning for the user. Like: https://github.com/cloudfoundry-community/cf-python-client/issues/51#issuecomment-536428838
+* Accept self-signed certificates, with a warning for the user. Like: https://github.com/cloudfoundry-community/cf-python-client/issues/51#issuecomment-536428838 --> https://github.com/t-markmann/nc-userimporter/commit/bcf10367f1cd5f2f01a04c5351adf22aca200add
 * read config from CLI-input if config-file is empty; update config.xml with input values?
 * ask if users exists first: https://docs.nextcloud.com/server/15/admin_manual/configuration_user/instruction_set_for_users.html
 * add other userdata
