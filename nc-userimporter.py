@@ -51,8 +51,8 @@ print("For details look into LICENSE file (GNU GPLv3).")
 print("")
 
 # Useful resources for contributors:
-# Nextcloud user API https://docs.nextcloud.com/server/15/admin_manual/configuration_user/instruction_set_for_users.html
-# Nextcloud group API https://docs.nextcloud.com/server/15/admin_manual/configuration_user/instruction_set_for_groups.html
+# Nextcloud user API https://docs.nextcloud.com/server/latest/admin_manual/configuration_user/instruction_set_for_users.html
+# Nextcloud group API https://docs.nextcloud.com/server/latest/admin_manual/configuration_user/instruction_set_for_groups.html
 # CURL to Python request converter https://curl.trillworks.com/
 
 # determine if running in a build package (frozen) or from seperate python script
@@ -80,7 +80,8 @@ config_csvfile = config_xmlsoup.find('csvfile').string
 config_csvDelimiter = config_xmlsoup.find('csvdelimiter').string
 config_csvDelimiterGroups = config_xmlsoup.find('csvdelimitergroups').string
 config_GeneratePassword = config_xmlsoup.find('generatepassword').string
-config_sslVerify = config_xmlsoup.find('sslverify').string
+config_sslVerify = eval(config_xmlsoup.find('sslverify').string)
+config_language = config_xmlsoup.find('language').string
 config_pdfOneDoc = config_xmlsoup.find('pdfonedoc').string
 config_EduDocs = config_xmlsoup.find('edudocs').string
 config_schoolgroup = config_xmlsoup.find('schoolgroup').string
@@ -391,7 +392,8 @@ with open(os.path.join(appdir, config_csvfile),mode='r') as csvfile:
       ('displayName', row[1]), 
       ('password', row[2]),
       ('email', row[3]),
-      ('quota', row[6])
+      ('quota', row[6]),
+      ('language', config_language)
     ]
 
     # if value exists: append single groups to data array/list for CURL

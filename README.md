@@ -45,7 +45,6 @@ Screenshot output:
 
 Open features, not yet implemented (help appreciated): 
 * Passwords with special characters not supported?
-* add default language; for each user in users.csv? Or at least to config.xml. Else new users will always get english welcome mails.
 * read config from CLI-input if config-file is empty; update config.xml with input values?
 * ask if users exists first: https://docs.nextcloud.com/server/15/admin_manual/configuration_user/instruction_set_for_users.html
 * add other userdata
