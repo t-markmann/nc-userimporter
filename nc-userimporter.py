@@ -80,6 +80,7 @@ config_csvfile = config_xmlsoup.find('csvfile').string
 config_csvDelimiter = config_xmlsoup.find('csvdelimiter').string
 config_csvDelimiterGroups = config_xmlsoup.find('csvdelimitergroups').string
 config_GeneratePassword = config_xmlsoup.find('generatepassword').string
+config_sslVerify = config_xmlsoup.find('sslverify').string
 config_pdfOneDoc = config_xmlsoup.find('pdfonedoc').string
 config_EduDocs = config_xmlsoup.find('edudocs').string
 config_schoolgroup = config_xmlsoup.find('schoolgroup').string
@@ -403,7 +404,7 @@ with open(os.path.join(appdir, config_csvfile),mode='r') as csvfile:
     for group in grouplist:
      try:
        groupresponse = requests.get(config_protocol + '://' + config_adminname + ':' + config_adminpass + '@' + 
-         config_ncUrl + config_apiUrlGroups + '?search=' + group.strip(), headers=requestheaders)
+         config_ncUrl + config_apiUrlGroups + '?search=' + group.strip(), headers=requestheaders, verify=config_sslVerify)
      except requests.exceptions.RequestException as e:  # handling errors
        print(e)
        print("The CURL request could not be performed.")
@@ -419,7 +420,7 @@ with open(os.path.join(appdir, config_csvfile),mode='r') as csvfile:
            'groupid':group.strip()
          }
          groupresponse = requests.post(config_protocol + '://' + config_adminname + ':' + config_adminpass + '@' + 
-           config_ncUrl + config_apiUrlGroups, headers=requestheaders, data=groupdata)
+           config_ncUrl + config_apiUrlGroups, headers=requestheaders, data=groupdata, verify=config_sslVerify)
        except requests.exceptions.RequestException as e:  # handling errors
          print(e)
          print("The CURL request could not be performed.")
@@ -455,7 +456,7 @@ with open(os.path.join(appdir, config_csvfile),mode='r') as csvfile:
     # perform the request
     try:
       response = requests.post(config_protocol + '://' + config_adminname + ':' + config_adminpass + '@' + 
-        config_ncUrl + config_apiUrl, headers=requestheaders, data=data)
+        config_ncUrl + config_apiUrl, headers=requestheaders, data=data, verify=config_sslVerify)
     except requests.exceptions.RequestException as e:  # handling errors
       print(e)
       print("The CURL request could not be performed.")
