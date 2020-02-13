@@ -6,6 +6,7 @@ import requests
 import certifi
 import csv
 import string
+import urllib.parse
 import qrcode
 import random
 from reportlab.lib.enums import TA_JUSTIFY
@@ -75,7 +76,7 @@ configfile.close()
 config_xmlsoup = BeautifulSoup(config, "html.parser") # parse
 config_ncUrl = config_xmlsoup.find('cloudurl').string
 config_adminname = config_xmlsoup.find('adminname').string
-config_adminpass = config_xmlsoup.find('adminpass').string
+config_adminpass = urllib.parse.quote(config_xmlsoup.find('adminpass').string)
 config_csvfile = config_xmlsoup.find('csvfile').string
 config_csvDelimiter = config_xmlsoup.find('csvdelimiter').string
 config_csvDelimiterGroups = config_xmlsoup.find('csvdelimitergroups').string
