@@ -15,8 +15,6 @@ Screenshot input:
     * __config.xml__: Insert your cloud-admin credentials into file _config.xml_. The user must have admin permissions in your Nextcloud.
     * __users.csv__: Insert the user data into the file _users.csv_ or recreate it with the same columns in a spreadsheet software.
 
-    Avoid special characters in username and password (including german umlauts) or test if the character is allowed first.
-
 3. Start the tool:
     * __Windows__: doubleclick _nc-userimporter.exe_.
 		(built and tested with Win10 Pro 1803 64-bit)
@@ -44,7 +42,6 @@ Screenshot output:
 * refactoring / clean code
 
 Open features, not yet implemented (help appreciated): 
-* Passwords with special characters not supported?
 * read config from CLI-input if config-file is empty; update config.xml with input values?
 * ask if users exists first: https://docs.nextcloud.com/server/15/admin_manual/configuration_user/instruction_set_for_users.html
 * add other userdata

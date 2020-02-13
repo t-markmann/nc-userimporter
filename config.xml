@@ -2,7 +2,8 @@
 <!-- Sensitive data! Delete this information after successful data import -->
     <cloudurl>YOUR-CLOUD-URL</cloudurl> <!-- CHANGE THIS to your cloud domain, e.g. mycloud.mydomain.org or www.mydomain.org/mycloud (without https://) -->
     <adminname>YOUR-ADMIN-USERNAME</adminname> <!-- CHANGE THIS to your cloud user, who has admin permissions-->
-    <adminpass>YOUR-ADMIN-PASSWORD</adminpass> <!-- CHANGE THIS to the password for that user -->
+    <!-- Attention: Please note most special characters are not allowed in passwords, including german umlauts -->
+	<adminpass>YOUR-ADMIN-PASSWORD</adminpass> <!-- CHANGE THIS to the password for that user -->
     <!-- Attention: Please note some special characters are not allowed in passwords, avoid using ) } ; # -->
 
 <!-- Settings -->
