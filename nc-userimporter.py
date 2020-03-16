@@ -526,9 +526,9 @@ with open(os.path.join(appdir, config_csvfile),mode='r') as csvfile:
       styles.add(ParagraphStyle(name='Justify', alignment=TA_JUSTIFY))
       # adds text to pdf-file
       if config_EduDocs == 'yes':
-        ptext = '<font size=14>Hallo %s,</font>' % ncusername
+        ptext = '<font size=14>Hallo %s,</font>' % row[1]
       else:
-        ptext = '<font size=14>Hello %s,</font>' % ncusername
+        ptext = '<font size=14>Hello %s,</font>' % row[1]
       Story.append(Paragraph(ptext, styles["Justify"]))
       Story.append(Spacer(1, 12))
 
