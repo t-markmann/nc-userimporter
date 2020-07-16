@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import os
 import os.path
 import sys
@@ -9,8 +10,10 @@ import string
 import urllib.parse
 import qrcode
 import random
+import codecs
+import html
 from reportlab.lib.enums import TA_JUSTIFY
-from reportlab.lib.pagesizes import letter
+from reportlab.lib.pagesizes import A4
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Image, PageBreak
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from tabulate import tabulate
@@ -68,7 +71,7 @@ else:
   ## print("Executable is run in normal Python environment, appdir set to: " + appdir) # for debug
 
 # read config from xml file
-configfile = open(os.path.join(appdir,'config.xml'),mode='r')
+configfile = codecs.open(os.path.join(appdir,'config.xml'),mode='r', encoding='utf-8')
 config = configfile.read()
 configfile.close()
 
@@ -275,21 +278,21 @@ def pwgenerator():
   # display expected results for EduDocs-users
 if config_EduDocs == 'yes':  
   usertable = [["Nutzername","Anzeigename","Passwort","E-Mail","Gruppen","Gruppen-Admin für","Speicherplatz"]]
-  with open(os.path.join(appdir, config_csvfile),mode='r') as csvfile:
+  with codecs.open(os.path.join(appdir, config_csvfile),mode='r', encoding='utf-8') as csvfile:
     readCSV = csv.reader(csvfile, delimiter=config_csvDelimiter)
     next(readCSV, None)  # skip the headers
     for row in readCSV:
       if (len(row) != 7): # check if number of columns is consistent
-        print("FEHLER: Die Zeiles des Nutzers",row[0],"hat",len(row),"Spalten. Es müssen 7 sein. Bitte korrigieren Sie dies in der csv-Datei.")
+        print("FEHLER: Die Zeiles des Nutzers",html.escape(row[0]),"hat",len(row),"Spalten. Es müssen 7 sein. Bitte korrigieren Sie dies in der csv-Datei.")
         input("Drücken Sie eine beliebige Taste, um den Prozess zu beenden.")
         sys.exit(1)
-      pass_anon = row[2]
+      pass_anon = html.escape(row[2])
       if len(pass_anon) > 0:
-        pass_anon = pass_anon[0] + "*" * (len(pass_anon)-1) # replace password for display on CLI
-      line = row[0]
+        pass_anon = "*" * (len(pass_anon)) # replace password for display on CLI
+      line = html.escape(row[0])
       row[0] = line.translate(mapping) # convert special characters and umlauts
       if row[4]:
-        grouplist = row[4].split(config_csvDelimiterGroups) # Groups in the CSV-file are split by semicolon --> load into list
+        grouplist = html.escape(row[4]).split(config_csvDelimiterGroups) # Groups in the CSV-file are split by semicolon --> load into list
         if grouplist: # if grouplist contains group SchuelerInnen or Lehrkraefte, remove it
           if "SchuelerInnen" in grouplist:
             grouplist.remove('SchuelerInnen')
@@ -298,12 +301,12 @@ if config_EduDocs == 'yes':
           grouplist.append(config_schoolgroup) # and add group which is set in config-file (config_schoolgroup)
       if not config_schoolgroup == 'SchuelerInnen': # if you import students in an EduDocs-instance, it is not possible to set groupadmins
         if row[5]:
-          groupadminlist = row[5].split(config_csvDelimiterGroups) # Groupadmin Values in the CSV-file are split by semicolon --> load into list
+          groupadminlist = html.escape(row[5]).split(config_csvDelimiterGroups) # Groupadmin Values in the CSV-file are split by semicolon --> load into list
         else:
           groupadminlist = []
       else:
         groupadminlist = []
-      currentuser = [row[0],row[1],pass_anon,row[3],grouplist,groupadminlist,row[6]]
+      currentuser = [html.escape(row[0]),html.escape(row[1]),pass_anon,html.escape(row[3]),grouplist,groupadminlist,html.escape(row[6])]
       usertable.append(currentuser)
   print(tabulate(usertable,headers="firstrow"))
 
@@ -319,20 +322,20 @@ if config_EduDocs == 'yes':
   # display expected results for nextcloud-users
 else:  
   usertable = [["Username","Display name","Password","Email","Groups","Group admin for","Quota"]]
-  with open(os.path.join(appdir, config_csvfile),mode='r') as csvfile:
+  with codecs.open(os.path.join(appdir, config_csvfile),mode='r', encoding='utf-8') as csvfile:
     readCSV = csv.reader(csvfile, delimiter=config_csvDelimiter)
     next(readCSV, None)  # skip the headers
     for row in readCSV:
       if (len(row) != 7): # check if number of columns is consistent
-        print("ERROR: row for user",row[0],"has",len(row),"columns. Should be 7. Please correct your csv-file.")
+        print("ERROR: row for user",html.escape(row[0]),"has",len(row),"columns. Should be 7. Please correct your csv-file.")
         input("Press [ANY KEY] to confirm and end the process.")
         sys.exit(1)
-      pass_anon = row[2]
+      pass_anon = html.escape(row[2])
       if len(pass_anon) > 0:
-        pass_anon = pass_anon[0] + "*" * (len(pass_anon)-1) # replace password for display on CLI
-      line = row[0]
+        pass_anon = "*" * (len(pass_anon)) # replace password for display on CLI
+      line = html.escape(row[0])
       row[0] = line.translate(mapping) # convert special characters and umlauts
-      currentuser = [row[0],row[1],pass_anon,row[3],row[4],row[5],row[6]]
+      currentuser = [html.escape(row[0]),html.escape(row[1]),pass_anon,html.escape(row[3]),html.escape(row[4]),html.escape(row[5]),html.escape(row[6])]
       usertable.append(currentuser)
   print(tabulate(usertable,headers="firstrow"))
 
@@ -350,25 +353,25 @@ if config_pdfOneDoc == 'yes':
   else:
     output_filename = "userlist_" + today + ".pdf"
   output_filepath = os.path.join( output_dir, output_filename )  
-  doc = SimpleDocTemplate(output_filepath,pagesize=letter,
+  doc = SimpleDocTemplate(output_filepath,pagesize=A4,
                          rightMargin=72,leftMargin=72,
                          topMargin=72,bottomMargin=18)
 # prepare pdf-content
 Story=[]
 
 # read rows from CSV file
-with open(os.path.join(appdir, config_csvfile),mode='r') as csvfile:
+with codecs.open(os.path.join(appdir, config_csvfile),mode='r', encoding='utf-8') as csvfile:
   readCSV = csv.reader(csvfile, delimiter=config_csvDelimiter)
   next(readCSV, None)  # skip the headers
   for row in readCSV:
-    line = row[0]
+    line = html.escape(row[0])
     row[0] = line.translate(mapping) # convert special characters and umlauts
     if config_GeneratePassword == 'yes':
       if not row[2]:
         row[2] = pwgenerator()
     if config_EduDocs == 'yes':    
       if row[4]:
-        grouplist = row[4].split(config_csvDelimiterGroups) # Groups in the CSV-file are split by semicolon --> load into list
+        grouplist = html.escape(row[4]).split(config_csvDelimiterGroups) # Groups in the CSV-file are split by semicolon --> load into list
         if grouplist: # if grouplist contains group SchuelerInnen or Lehrkraefte, remove it
           if "SchuelerInnen" in grouplist:
             grouplist.remove('SchuelerInnen')
@@ -377,30 +380,30 @@ with open(os.path.join(appdir, config_csvfile),mode='r') as csvfile:
           grouplist.append(config_schoolgroup) # and add group which is set in config-file (config_schoolgroup)
       if not config_schoolgroup == 'SchuelerInnen': # if you import students in an EduDocs-instance, it is not possible to set groupadmins
         if row[5]:
-          groupadminlist = row[5].split(config_csvDelimiterGroups) # Groupadmin Values in the CSV-file are split by semicolon --> load into list
+          groupadminlist = html.escape(row[5]).split(config_csvDelimiterGroups) # Groupadmin Values in the CSV-file are split by semicolon --> load into list
         else:
           groupadminlist = []
       else:
         groupadminlist = []
-      print("Nutzername:",row[0],"| Anzeigename:",row[1],"| Passwort: ","*" * len(row[2]) + 
-      "| E-Mail:",row[3],"| Gruppen:",grouplist,"| Gruppen-Admin für:",groupadminlist,"| Speicherplatz:",row[6],)
+      print("Nutzername:",html.escape(row[0]),"| Anzeigename:",html.escape(row[1]),"| Passwort: ","*" * len(row[2]) + 
+      "| E-Mail:",html.escape(row[3]),"| Gruppen:",grouplist,"| Gruppen-Admin für:",groupadminlist,"| Speicherplatz:",html.escape(row[6]),)
     else:
-      print("Username:",row[0],"| Display name:",row[1],"| Password: ","*" * len(row[2]) + 
-    "| Email:",row[3],"| Groups:",row[4],"| Group admin for:",row[5],"| Quota:",row[6],)
+      print("Username:",html.escape(row[0]),"| Display name:",html.escape(row[1]),"| Password: ","*" * len(row[2]) + 
+    "| Email:",html.escape(row[3]),"| Groups:",html.escape(row[4]),"| Group admin for:",html.escape(row[5]),"| Quota:",html.escape(row[6]),)
     # build the dataset for the request
     data = [
-      ('userid', row[0]),
-      ('displayName', row[1]), 
-      ('password', row[2]),
-      ('email', row[3]),
-      ('quota', row[6]),
+      ('userid', html.escape(row[0])),
+      ('displayName', html.escape(row[1])), 
+      ('password', html.escape(row[2])),
+      ('email', html.escape(row[3])),
+      ('quota', html.escape(row[6])),
       ('language', config_language)
     ]
 
     # if value exists: append single groups to data array/list for CURL
     if not config_EduDocs == 'yes':  
       if row[4]:
-        grouplist = row[4].split(config_csvDelimiterGroups) # Groups in the CSV-file are split by semicolon --> load into list
+        grouplist = html.escape(row[4]).split(config_csvDelimiterGroups) # Groups in the CSV-file are split by semicolon --> load into list
       else:
         grouplist = []
     # check if group exists  
@@ -448,13 +451,12 @@ with open(os.path.join(appdir, config_csvfile),mode='r') as csvfile:
     # if value exists: append group admin values to data array/list for CURL
     if not config_EduDocs == 'yes': # if you import students in an EduDocs-Instance, it is not possible to set groupadmins
       if row[5]:
-        groupadminlist = row[5].split(config_csvDelimiterGroups) # Groupadmin Values in the CSV-file are split by semicolon --> load into list
-
-    try:
-      for groupadmin in groupadminlist: 
-        data.append(('subadmin[]', groupadmin.strip())) # subadmin is parameter NC API
-    except NameError:
-      print("groupadminlist is not defined")
+        groupadminlist = html.escape(row[5]).split(config_csvDelimiterGroups) # Groupadmin Values in the CSV-file are split by semicolon --> load into list
+        try:
+          for groupadmin in groupadminlist: 
+            data.append(('subadmin[]', groupadmin.strip())) # subadmin is parameter NC API
+        except NameError:
+          print("groupadminlist is not defined")
 
     # perform the request
     try:
@@ -479,8 +481,8 @@ with open(os.path.join(appdir, config_csvfile),mode='r') as csvfile:
       ' = ' + response_xmlsoup.find('message').string)
 
     # append detailed response to logfile in output-folder
-    logfile = open(os.path.join(output_dir,'output.log'),mode='a')
-    logfile.write("\nUSER: " + row[0] + "\nTIME: " + time.strftime("%d.%m.%Y %H:%M:%S",time.localtime(time.time())) + 
+    logfile = codecs.open(os.path.join(output_dir,'output.log'),mode='a', encoding='utf-8')
+    logfile.write("\nUSER: " + html.escape(row[0]) + "\nTIME: " + time.strftime("%d.%m.%Y %H:%M:%S",time.localtime(time.time())) + 
       "\nRESPONSE: " + response_xmlsoup.find('status').string + ' ' + response_xmlsoup.find('statuscode').string + 
       ' = ' + response_xmlsoup.find('message').string + "\n")
     logfile.close()
@@ -489,21 +491,21 @@ with open(os.path.join(appdir, config_csvfile),mode='r') as csvfile:
 
     if response_xmlsoup.find('statuscode').string == "100":
       # generate qr-code
-      qr.add_data("nc://login/user:" + row[0] + "&password:" + row[2] + "&server:https://" + config_ncUrl)
+      qr.add_data("nc://login/user:" + html.escape(row[0]) + "&password:" + html.escape(row[2]) + "&server:https://" + config_ncUrl)
       img = qr.make_image(fill_color="black", back_color="white")
-      img.save(os.path.join( tmp_dir, row[0] + ".jpg" ))
+      img.save(os.path.join( tmp_dir, html.escape(row[0]) + ".jpg" ))
       qr.clear()
 
       # prepare pdf-output (if pdfOneDoc == no)
       if config_pdfOneDoc == 'no':
         if config_EduDocs == 'yes':
-          output_filename = config_schoolgroup + "_" + row[0] + "_" + today + ".pdf"
+          output_filename = config_schoolgroup + "_" + html.escape(row[0]) + "_" + today + ".pdf"
         else:
-          output_filename = row[0] + "_" + today + ".pdf"
+          output_filename = html.escape(row[0]) + "_" + today + ".pdf"
  
         output_filepath = os.path.join( output_dir, output_filename )
         
-        doc = SimpleDocTemplate(output_filepath,pagesize=letter,
+        doc = SimpleDocTemplate(output_filepath,pagesize=A4,
                                 rightMargin=72,leftMargin=72,
                                 topMargin=52,bottomMargin=18)       
 
@@ -511,8 +513,9 @@ with open(os.path.join(appdir, config_csvfile),mode='r') as csvfile:
         nclogo = "assets/EduDocs_Logo.jpg" # EduDocs-logo (if in EduDocs-mode)
       else:
         nclogo = "assets/Nextcloud_Logo.jpg" # nextcloud-logo (if in normal mode)
-      ncusername = row[0] # username
-      ncpassword = row[2] # password
+      ncuserlogin = html.escape(row[0]) # loginname
+      ncusername = html.escape(row[1]) # username
+      ncpassword = html.escape(row[2]) # password
       nclink = config_protocol + "://" + config_ncUrl # adds nextcloud-url
         # adds nextcloud-logo to pdf-file 
       if config_EduDocs == 'yes':
@@ -526,9 +529,9 @@ with open(os.path.join(appdir, config_csvfile),mode='r') as csvfile:
       styles.add(ParagraphStyle(name='Justify', alignment=TA_JUSTIFY))
       # adds text to pdf-file
       if config_EduDocs == 'yes':
-        ptext = '<font size=14>Hallo %s,</font>' % row[1]
+        ptext = '<font size=14>Hallo %s,</font>' % ncusername
       else:
-        ptext = '<font size=14>Hello %s,</font>' % row[1]
+        ptext = '<font size=14>Hello %s,</font>' % ncusername
       Story.append(Paragraph(ptext, styles["Justify"]))
       Story.append(Spacer(1, 12))
 
@@ -573,7 +576,7 @@ with open(os.path.join(appdir, config_csvfile),mode='r') as csvfile:
       Story.append(Paragraph(ptext, styles["Normal"]))
       Story.append(Spacer(1, 12))    
 
-      ptext = '<font size=14>%s</font>' % ncusername
+      ptext = '<font size=14>%s</font>' % ncuserlogin
       Story.append(Paragraph(ptext, styles["Normal"]))
       Story.append(Spacer(1, 24))
 
@@ -598,7 +601,7 @@ with open(os.path.join(appdir, config_csvfile),mode='r') as csvfile:
       Story.append(Paragraph(ptext, styles["Normal"]))
       Story.append(Spacer(1, 24))       
       # adds qr-code to pdf-file
-      im2 = Image(os.path.join( tmp_dir, row[0] + ".jpg" ), 200, 200)
+      im2 = Image(os.path.join( tmp_dir, html.escape(row[0]) + ".jpg" ), 200, 200)
       Story.append(im2)
       del im2
       if config_pdfOneDoc == 'no':
