@@ -2,14 +2,14 @@
 
 This tool creates Nextcloud users from a CSV file, which you exported from some other software or created with a spreadsheet software.
 
-Zip files with executables for Windows, MacOS, Linux available here: https://get.edudocs.org/de/assets/nc-userimporter/ - If you have a Python3 environment with all the dependencies/modules installed, you can run the script without the build of course.
+Zip file with an executable for Windows is available here: https://get.edudocs.org/de/assets/nc-userimporter/ - If you have a Python3 environment with all the dependencies/modules installed, you can run the script without the build of course.
 
 Screenshot input:
 ![Screenshot from Windows commandline](https://github.com/t-markmann/nc-userimporter/blob/master/assets/screenshot.png)
 
 ## Instructions
 
-1. Download and extract the zip-file for your operating system from https://get.edudocs.org/de/assets/nc-userimporter/
+1. Download and extract the zip-file from https://get.edudocs.org/de/assets/nc-userimporter/
 
 2. Insert data:
     * __config.xml__: Insert your cloud-admin credentials into file _config.xml_. The user must have admin permissions in your Nextcloud.
@@ -17,13 +17,8 @@ Screenshot input:
 
 3. Start the tool:
     * __Windows__: doubleclick _nc-userimporter.exe_.
-		(built and tested with Win10 Pro 1803 64-bit)
-	* __Linux__: doubleclick _nc-userimporter_ or via terminal: change to the app-directory and execute: ./nc-userimporter
-		(built and tested with Ubuntu 16.04 x86_64; tested with Fedora 29 x86_64, openSUSE Leap 15.0 x86_64, Arch)
-		__Troubleshooting__: Make sure the file is executable (https://www.qwant.com/?q=make%20file%20executable%20linux)
-	* __Mac__: doubleclick _nc-userimporter_. Answer the prompt with "open", ignore the warning.
-		(built and tested with macOS 10.12 Sierra)
-		__Troubleshooting__: Make sure the file is executable (https://www.qwant.com/?q=make%20file%20executable%20mac)
+    * __Linux__ / __Mac__: install all dependencies (https://github.com/t-markmann/nc-userimporter/wiki#install-dependencies-for-running-py-script) and run nc-userimporter.py
+    	* __Troubleshooting__: Make sure the file is executable (https://www.qwant.com/?q=make%20file%20executable%20linux / https://www.qwant.com/?q=make%20file%20executable%20mac)
 
 4. Follow the interactive commandline instructions. Check output.log ("output"-folder in script-directory) and your user overview in Nextcloud.
 
