@@ -40,3 +40,4 @@ Open features, not yet implemented (help appreciated):
 * read config from CLI-input if config-file is empty; update config.xml with input values?
 * ask if users exists first: https://docs.nextcloud.com/server/15/admin_manual/configuration_user/instruction_set_for_users.html
 * add other userdata
+* delete users
