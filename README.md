@@ -17,7 +17,7 @@ Screenshot input:
 
 3. Start the tool:
     * __Windows__: doubleclick _nc-userimporter.exe_.
-    * __Linux__ / __Mac__: install all dependencies (https://github.com/t-markmann/nc-userimporter/wiki#install-dependencies-for-running-py-script) and run nc-userimporter.py
+    * __Linux__ / __Mac__: install all dependencies (https://github.com/t-markmann/nc-userimporter/wiki#install-dependencies-for-running-py-script) and run: python3 nc-userimporter.py
     	* __Troubleshooting__: Make sure the file is executable (https://www.qwant.com/?q=make%20file%20executable%20linux / https://www.qwant.com/?q=make%20file%20executable%20mac)
 
 4. Follow the interactive commandline instructions. Check output.log ("output"-folder in script-directory) and your user overview in Nextcloud.
