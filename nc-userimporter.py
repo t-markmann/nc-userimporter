@@ -264,9 +264,26 @@ qr = qrcode.QRCode(
 # Then it combines each random character and creates a random order.
 # TODO update documentation
 def pwgenerator(length):
-    characters = string.ascii_letters + string.digits + string.punctuation
-    password = ''.join(random.choice(characters) for i in range(length))
-    return password
+    if length < 4:
+        raise ValueError("Password length should be at least 4 to include all character types.")
+
+    # Ensure each type of character is included
+    password = [
+        random.choice(string.ascii_uppercase),
+        random.choice(string.ascii_lowercase),
+        random.choice(string.digits),
+        random.choice(string.punctuation)
+    ]
+
+    # Fill the rest of the password length with random characters
+    if length > 4:
+        characters = string.ascii_letters + string.digits + string.punctuation
+        password += [random.choice(characters) for _ in range(length - 4)]
+
+    # Shuffle the list to ensure randomness
+    random.shuffle(password)
+
+    return "".join(password)
 
 # display expected results before executing CURL
   # display expected results for EduDocs-users
