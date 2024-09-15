@@ -135,11 +135,11 @@ else:
 if not os.path.isfile(config_csvfile):
     if config_EduDocs == 'yes':
       print("FEHLER!")
-      print("Die csv-Datei (" + config_csvfile + "), die Sie in der config.xml eingetragen haben, existiert nicht. Bitte speichern Sie die Datei '" + config_csvfile + "' im Hauptverzeichnis des Scripts oder bearbeiten Sie die config.xml")
+      print(f"Die csv-Datei ({config_csvfile}), die Sie in der config.xml eingetragen haben, existiert nicht. Bitte speichern Sie die Datei '{config_csvfile}' im Hauptverzeichnis des Scripts oder bearbeiten Sie die config.xml")
       input("Drücken Sie eine beliebige Taste, um zu bestätigen und den Prozess zu beenden.")
     else:
       print("ERROR!")
-      print("The csv-file (" + config_csvfile + ") you specified in you config.xml does not exist. Please save '" + config_csvfile + "' in main-directory of the script or edit your config.xml")
+      print(f"The csv-file ({config_csvfile}) you specified in you config.xml does not exist. Please save '{config_csvfile}' in main-directory of the script or edit your config.xml")
       input("Press [ANY KEY] to confirm and end the process.")     
     sys.exit(1)
 
@@ -148,7 +148,7 @@ config_ncUrl = config_ncUrl.replace("http://", "")
 config_ncUrl = config_ncUrl.replace("https://", "")
 
 # TODO optional: read config from input() if config.xml empty
-# print('Username of creator (admin?):') 
+# print('Username of creator (admin?):')
 # config_adminname = input()
 # print('Password of creator:')
 # config_adminpass = input()
@@ -349,9 +349,9 @@ else:
 # prepare pdf-output (if pdfOneDoc == yes)
 if config_pdfOneDoc == 'yes':
   if config_EduDocs == 'yes':
-    output_filename = config_schoolgroup + "_" + today + ".pdf"
+    output_filename = f"{config_schoolgroup}_{today}.pdf"
   else:
-    output_filename = "userlist_" + today + ".pdf"
+    output_filename = f"userlist_{today}.pdf"
   output_filepath = os.path.join( output_dir, output_filename )  
   doc = SimpleDocTemplate(output_filepath,pagesize=A4,
                          rightMargin=72,leftMargin=72,
