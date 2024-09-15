@@ -175,7 +175,8 @@ if not os.path.exists(tmp_dir):
 # adds date and time as string to variable
 today = datetime.now().strftime('%Y-%m-%d_%H-%M-%S') 
 
-# Mapping for umlauts and and special characters. The listed umlauts and special characters are automatically converted to a compatible spelling for the user name.
+# Mapping for umlauts and special characters.
+# The listed umlauts and special characters are automatically converted to a compatible spelling for the username.
 mapping = {
            ord(u"Ä"): u"Ae",
            ord(u"ä"): u"ae",
