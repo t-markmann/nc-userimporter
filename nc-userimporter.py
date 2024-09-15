@@ -84,6 +84,7 @@ config_csvfile = config_xmlsoup.find('csvfile').string
 config_csvDelimiter = config_xmlsoup.find('csvdelimiter').string
 config_csvDelimiterGroups = config_xmlsoup.find('csvdelimitergroups').string
 config_GeneratePassword = config_xmlsoup.find('generatepassword').string
+config_PasswordLength = config_xmlsoup.find('passwordlength').int
 config_sslVerify = eval(config_xmlsoup.find('sslverify').string)
 config_language = config_xmlsoup.find('language').string
 config_pdfOneDoc = config_xmlsoup.find('pdfonedoc').string
@@ -261,19 +262,11 @@ qr = qrcode.QRCode(
 # This will generate a random password with 1 random uppercase letter, 3 random lowercase letters,
 # 3 random digits, and 1 random special character--this can be adjusted as needed.
 # Then it combines each random character and creates a random order.
-def pwgenerator():
-  PWUPP = random.SystemRandom().choice(string.ascii_uppercase)
-  PWLOW1 = random.SystemRandom().choice(string.ascii_lowercase)
-  PWLOW2 = random.SystemRandom().choice(string.ascii_lowercase)
-  PWLOW3 = random.SystemRandom().choice(string.ascii_lowercase)
-  PWDIG1 = random.SystemRandom().choice(string.digits)
-  PWDIG2 = random.SystemRandom().choice(string.digits)
-  PWDIG3 = random.SystemRandom().choice(string.digits)
-  PWSPEC = random.SystemRandom().choice('!@*(§')
-  PWD = None
-  PWD = PWUPP + PWLOW1 + PWLOW2 + PWLOW3 + PWDIG1 + PWDIG2 + PWDIG3 + PWSPEC
-  PWD = ''.join(random.sample(PWD,len(PWD)))
-  return(PWD)
+# TODO update documentation
+def pwgenerator(length):
+    characters = string.ascii_letters + string.digits + string.punctuation
+    password = ''.join(random.choice(characters) for i in range(length))
+    return password
 
 # display expected results before executing CURL
   # display expected results for EduDocs-users
@@ -369,7 +362,7 @@ with codecs.open(os.path.join(appdir, config_csvfile),mode='r', encoding='utf-8'
     row[0] = line.translate(mapping) # convert special characters and umlauts
     if config_GeneratePassword == 'yes':
       if not row[2]:
-        row[2] = pwgenerator()
+        row[2] = pwgenerator(config_PasswordLength)
     if config_EduDocs == 'yes':    
       if row[4]:
         grouplist = html.escape(row[4]).split(config_csvDelimiterGroups) # Groups in the CSV-file are split by semicolon --> load into list
