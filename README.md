@@ -9,7 +9,7 @@ Screenshot input:
 
 1. Download and extract the zip-file
    * in the repository: click "code"--> "download zip"
-   * OR: https://github.com/t-markmann/nc-userimporter/archive/refs/heads/main.zip
+   * OR: https://github.com/t-markmann/nc-userimporter/archive/refs/heads/master.zip
 
 3. Insert data:
     * __config.xml__: Insert your cloud-admin credentials into file _config.xml_. The user must have admin permissions in your Nextcloud.
