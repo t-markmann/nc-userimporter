@@ -84,6 +84,7 @@ config_csvfile = config_xmlsoup.find('csvfile').string
 config_csvDelimiter = config_xmlsoup.find('csvdelimiter').string
 config_csvDelimiterGroups = config_xmlsoup.find('csvdelimitergroups').string
 config_GeneratePassword = config_xmlsoup.find('generatepassword').string
+config_PasswordLength = int(config_xmlsoup.find('passwordlength').string)
 config_sslVerify = eval(config_xmlsoup.find('sslverify').string)
 config_language = config_xmlsoup.find('language').string
 config_pdfOneDoc = config_xmlsoup.find('pdfonedoc').string
@@ -135,11 +136,11 @@ else:
 if not os.path.isfile(config_csvfile):
     if config_EduDocs == 'yes':
       print("FEHLER!")
-      print("Die csv-Datei (" + config_csvfile + "), die Sie in der config.xml eingetragen haben, existiert nicht. Bitte speichern Sie die Datei '" + config_csvfile + "' im Hauptverzeichnis des Scripts oder bearbeiten Sie die config.xml")
+      print(f"Die csv-Datei ({config_csvfile}), die Sie in der config.xml eingetragen haben, existiert nicht. Bitte speichern Sie die Datei '{config_csvfile}' im Hauptverzeichnis des Scripts oder bearbeiten Sie die config.xml")
       input("Drücken Sie eine beliebige Taste, um zu bestätigen und den Prozess zu beenden.")
     else:
       print("ERROR!")
-      print("The csv-file (" + config_csvfile + ") you specified in you config.xml does not exist. Please save '" + config_csvfile + "' in main-directory of the script or edit your config.xml")
+      print(f"The csv-file ({config_csvfile}) you specified in you config.xml does not exist. Please save '{config_csvfile}' in main-directory of the script or edit your config.xml")
       input("Press [ANY KEY] to confirm and end the process.")     
     sys.exit(1)
 
@@ -148,7 +149,7 @@ config_ncUrl = config_ncUrl.replace("http://", "")
 config_ncUrl = config_ncUrl.replace("https://", "")
 
 # TODO optional: read config from input() if config.xml empty
-# print('Username of creator (admin?):') 
+# print('Username of creator (admin?):')
 # config_adminname = input()
 # print('Password of creator:')
 # config_adminpass = input()
@@ -175,7 +176,8 @@ if not os.path.exists(tmp_dir):
 # adds date and time as string to variable
 today = datetime.now().strftime('%Y-%m-%d_%H-%M-%S') 
 
-# Mapping for umlauts and and special characters. The listed umlauts and special characters are automatically converted to a compatible spelling for the user name.
+# Mapping for umlauts and special characters.
+# The listed umlauts and special characters are automatically converted to a compatible spelling for the username.
 mapping = {
            ord(u"Ä"): u"Ae",
            ord(u"ä"): u"ae",
@@ -260,19 +262,28 @@ qr = qrcode.QRCode(
 # This will generate a random password with 1 random uppercase letter, 3 random lowercase letters,
 # 3 random digits, and 1 random special character--this can be adjusted as needed.
 # Then it combines each random character and creates a random order.
-def pwgenerator():
-  PWUPP = random.SystemRandom().choice(string.ascii_uppercase)
-  PWLOW1 = random.SystemRandom().choice(string.ascii_lowercase)
-  PWLOW2 = random.SystemRandom().choice(string.ascii_lowercase)
-  PWLOW3 = random.SystemRandom().choice(string.ascii_lowercase)
-  PWDIG1 = random.SystemRandom().choice(string.digits)
-  PWDIG2 = random.SystemRandom().choice(string.digits)
-  PWDIG3 = random.SystemRandom().choice(string.digits)
-  PWSPEC = random.SystemRandom().choice('!@*(§')
-  PWD = None
-  PWD = PWUPP + PWLOW1 + PWLOW2 + PWLOW3 + PWDIG1 + PWDIG2 + PWDIG3 + PWSPEC
-  PWD = ''.join(random.sample(PWD,len(PWD)))
-  return(PWD)
+# TODO update documentation
+def pwgenerator(length):
+    if length < 4:
+        raise ValueError("Password length should be at least 4 to include all character types.")
+
+    # Ensure each type of character is included
+    password = [
+        random.choice(string.ascii_uppercase),
+        random.choice(string.ascii_lowercase),
+        random.choice(string.digits),
+        random.choice(string.punctuation)
+    ]
+
+    # Fill the rest of the password length with random characters
+    if length > 4:
+        characters = string.ascii_letters + string.digits + string.punctuation
+        password += [random.choice(characters) for _ in range(length - 4)]
+
+    # Shuffle the list to ensure randomness
+    random.shuffle(password)
+
+    return "".join(password)
 
 # display expected results before executing CURL
   # display expected results for EduDocs-users
@@ -349,9 +360,9 @@ else:
 # prepare pdf-output (if pdfOneDoc == yes)
 if config_pdfOneDoc == 'yes':
   if config_EduDocs == 'yes':
-    output_filename = config_schoolgroup + "_" + today + ".pdf"
+    output_filename = f"{config_schoolgroup}_{today}.pdf"
   else:
-    output_filename = "userlist_" + today + ".pdf"
+    output_filename = f"userlist_{today}.pdf"
   output_filepath = os.path.join( output_dir, output_filename )  
   doc = SimpleDocTemplate(output_filepath,pagesize=A4,
                          rightMargin=72,leftMargin=72,
@@ -368,7 +379,7 @@ with codecs.open(os.path.join(appdir, config_csvfile),mode='r', encoding='utf-8'
     row[0] = line.translate(mapping) # convert special characters and umlauts
     if config_GeneratePassword == 'yes':
       if not row[2]:
-        row[2] = pwgenerator()
+        row[2] = pwgenerator(config_PasswordLength)
     if config_EduDocs == 'yes':    
       if row[4]:
         grouplist = html.escape(row[4]).split(config_csvDelimiterGroups) # Groups in the CSV-file are split by semicolon --> load into list
