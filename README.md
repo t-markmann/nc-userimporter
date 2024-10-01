@@ -16,11 +16,11 @@ Screenshot input:
     * __users.csv__: Insert the user data into the file _users.csv_ or recreate it with the same columns in a spreadsheet software.
 
 4. Start the tool:
-    * __Windows__: doubleclick _nc-userimporter.exe_.
+    * __Windows__: doubleclick _nc-user-manager.exe_.
     * __Linux__ / __Mac__: install all dependencies (https://github.com/t-markmann/nc-userimporter/wiki#install-dependencies-for-running-py-script) and run: python3 nc-userimporter.py
     	* __Troubleshooting__: Make sure the file is executable (https://www.qwant.com/?q=make%20file%20executable%20linux / https://www.qwant.com/?q=make%20file%20executable%20mac)
 
-5. Follow the interactive commandline instructions. Check output.log ("output"-folder in script-directory) and your user overview in Nextcloud.
+5. Follow the interactive commandline instructions. Check output.log ("logs"-folder in script-directory) and your user overview in Nextcloud.
 
 
 ## Output
@@ -38,5 +38,4 @@ Screenshot output:
 
 Open features, not yet implemented (help appreciated): 
 * read config from CLI-input if config-file is empty; update config.xml with input values?
-* ask if users exists first: https://docs.nextcloud.com/server/latest/admin_manual/configuration_user/instruction_set_for_users.html
 * add other userdata

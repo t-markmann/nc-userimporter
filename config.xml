@@ -1,22 +1,25 @@
 <config>
-<!-- Sensitive data! Delete this information after successful data import -->
-    <cloudurl>YOUR-CLOUD-URL</cloudurl> <!-- CHANGE THIS to your cloud domain, e.g. mycloud.mydomain.org or www.mydomain.org/mycloud (without https://) -->
-    <adminname>YOUR-ADMIN-USERNAME</adminname> <!-- CHANGE THIS to your cloud user, who has admin permissions-->
+    <!-- General-Settings -->
+    <scriptlang>ENG</scriptlang>   <!-- Language of this script and the greeting-text on your pdf-files. Currently supported: German (GER), English (ENG), French (FRA), Spanish (SPA) -->
+    
+    <!-- Sensitive data! Delete this information after successful data import -->
+    <cloudurl>mycloud.mydomain.org</cloudurl> <!-- CHANGE THIS to your cloud domain, e.g. mycloud.mydomain.org or www.mydomain.org/mycloud (without https://) -->
+    <adminname>Cloudadmin</adminname> <!-- CHANGE THIS to your cloud user, who has admin permissions-->
     <!-- Attention: Please note most special characters are not allowed in passwords, including german umlauts -->
-	<adminpass>YOUR-ADMIN-PASSWORD</adminpass> <!-- CHANGE THIS to the password for that user -->
+	<adminpass>your_password</adminpass> <!-- CHANGE THIS to the password for that user -->
     <!-- Attention: Please note some special characters are not allowed in passwords, avoid using ) } ; # -->
 
-<!-- Settings -->
+    <!-- Import-Settings -->
     <csvfile>users.csv</csvfile> <!-- enter the name of the user-csv-file to be imported. (e.g. teachers.csv). The file must be located in the root directory of the script. Default: users.csv-->
     <csvdelimiter>;</csvdelimiter> <!-- change this to ; if you create your CSV-file with Apple Numbers -->
     <csvdelimitergroups>,</csvdelimitergroups> <!-- change this to , if you create your CSV-file with Apple Numbers -->
-    <pdfonedoc>yes</pdfonedoc> <!-- choose 'no' if you want to get a pdf-file for each user. choose 'yes' if you want to get a single pdf-file with all users -->
+    <pdf_one_file>yes</pdf_one_file> <!-- choose 'yes' if you want to get a single pdf-file with all new users. choose 'no' if not.  -->
+    <pdf_single_files>yes</pdf_single_files> <!-- choose 'yes' if you want to get a pdf-file for each new user. Choose 'no' if not. -->
     <generatepassword>yes</generatepassword> <!-- Select yes if you want a password to be generated automatically if no password is specified in user-csv-file. Select no if you want an e-mail to be sent to the user instead with a request to enter a password. In this case a correct e-mail address MUST be entered in the user-csv-file. Special use case: If you disable "send mail to new users" in your Nextcloud admin config (my-nc.example.com/index.php/settings/users), no Welcome Mail is sent. Users then can later request a reset password link via E-Mail. -->
     <passwordlength>12</passwordlength>
     <sslverify>True</sslverify> <!-- leave this on True for improved security. If you use a self-signed SSL/TLS certificate, set this to False -->
-    <language>de</language> <!-- all users in the list will be created with this language (and receive the welcome e-mail in this language): de_DE (German/Sie), de (German/Du), en (English), all codes: https://www.transifex.com/explore/languages/ -->
+    <language>en</language> <!-- all users in the list will be created with this language (and receive the welcome e-mail in this language): de_DE (German/Sie), de (German/Du), en (English), all codes: https://www.transifex.com/explore/languages/ -->
 
-<!-- Special settings for EduDocs-Users (www.edudocs.org) -->
-    <EduDocs>no</EduDocs> <!-- change from 'no' to 'yes' if you use this importer for an EduDocs-Instance -->
-    <schoolgroup>Lehrkraefte</schoolgroup> <!-- change this to 'SchuelerInnen', 'Lehrkraefte' or another groupname you like to import. PAY ATTENTION TO THE SAME SPELLING (SchuelerInnen / Lehrkraefte)!!! -->
-</config>
+    <!-- Expert-Settings-->
+    <loglevel>INFO</loglevel> <!-- loglevel for debugging (Standard: INFO), Options: DEBUG, INFO, WARNING, ERROR, CRITICAL -->
+</config>  
