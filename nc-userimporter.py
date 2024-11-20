@@ -83,6 +83,7 @@ config_adminpass = urllib.parse.quote(config_xmlsoup.find('adminpass').string)
 config_csvfile = config_xmlsoup.find('csvfile').string
 config_csvDelimiter = config_xmlsoup.find('csvdelimiter').string
 config_csvDelimiterGroups = config_xmlsoup.find('csvdelimitergroups').string
+config_UsernameSpaceCharacter = config_xmlsoup.find('usernamespacecharacter').string
 config_GeneratePassword = config_xmlsoup.find('generatepassword').string
 config_PasswordLength = int(config_xmlsoup.find('passwordlength').string)
 config_sslVerify = eval(config_xmlsoup.find('sslverify').string)
@@ -374,9 +375,17 @@ Story=[]
 with codecs.open(os.path.join(appdir, config_csvfile),mode='r', encoding='utf-8') as csvfile:
   readCSV = csv.reader(csvfile, delimiter=config_csvDelimiter)
   next(readCSV, None)  # skip the headers
-  for row in readCSV:
+  for i, row in enumerate(readCSV, 1):
     line = html.escape(row[0])
     row[0] = line.translate(mapping) # convert special characters and umlauts
+    
+    # Username building from display name
+    if not row[0]:
+      if row[1]:
+        row[0] = row[1].replace(" ", config_UsernameSpaceCharacter).lower().translate(mapping)
+      else:
+        raise ValueError(f"Both Username and Display name are empty at line {i}, provide at least the Display name. Please correct your csv-file.")
+
     if config_GeneratePassword == 'yes':
       if not row[2]:
         row[2] = pwgenerator(config_PasswordLength)
