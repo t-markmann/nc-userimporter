@@ -382,7 +382,7 @@ with codecs.open(os.path.join(appdir, config_csvfile),mode='r', encoding='utf-8'
     # Username building from display name
     if not row[0]:
       if row[1]:
-        row[0] = row[1].replace(" ", config_UsernameSpaceCharacter).lower().translate(mapping)
+        row[0] = row[1].replace(" ", config_UsernameSpaceCharacter or "").lower().translate(mapping)
       else:
         raise ValueError(f"Both Username and Display name are empty at line {i}, provide at least the Display name. Please correct your csv-file.")
 
