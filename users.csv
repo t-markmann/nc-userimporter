@@ -1,6 +1,6 @@
 username;displayname;password;email;groups;subadmin;quota
-broe;Bob Hilbert;bobpassword0001/()();mail@mail.com;student;100 MB
-csmith;Chris Smith;;mail@mail.com;teacher;;1 GB
+broe;Bob Hilbert;bobpassword0001/()();bobhilbert@example.com;student;100 MB
+csmith;Chris Smith;;chrissmith@example.com;teacher;;1 GB
 Jhößer;;lkajsdflj98798klasdf/()();;student;;1GB
 Åçì.Œñšú;Åçì Œñšú;lökajs§$%&wnnal28972nna/()();;;;
-adoe;Alice Doe;alicepassword;mail@mail.com;Lehrkraefte;subadmin-group;5 GB
+adoe;Alice Doe;alicepassword;alicedoe@example.com;Lehrkraefte;subadmin-group;5 GB
