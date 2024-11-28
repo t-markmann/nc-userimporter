@@ -11,6 +11,7 @@
     <csvdelimiter>;</csvdelimiter> <!-- change this to ; if you create your CSV-file with Apple Numbers -->
     <csvdelimitergroups>,</csvdelimitergroups> <!-- change this to , if you create your CSV-file with Apple Numbers -->
     <pdfonedoc>yes</pdfonedoc> <!-- choose 'no' if you want to get a pdf-file for each user. choose 'yes' if you want to get a single pdf-file with all users -->
+    <usernamespacecharacter></usernamespacecharacter> <!-- change this to a character you want to use as blank spaces replacement in your usernames built from displayname. Default: none -->
     <generatepassword>yes</generatepassword> <!-- Select yes if you want a password to be generated automatically if no password is specified in user-csv-file. Select no if you want an e-mail to be sent to the user instead with a request to enter a password. In this case a correct e-mail address MUST be entered in the user-csv-file. Special use case: If you disable "send mail to new users" in your Nextcloud admin config (my-nc.example.com/index.php/settings/users), no Welcome Mail is sent. Users then can later request a reset password link via E-Mail. -->
     <passwordlength>12</passwordlength>
     <sslverify>True</sslverify> <!-- leave this on True for improved security. If you use a self-signed SSL/TLS certificate, set this to False -->
