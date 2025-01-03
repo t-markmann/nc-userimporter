@@ -2,9 +2,6 @@
 
 This tool creates Nextcloud users from a CSV file, which you exported from some other software or created with a spreadsheet software.
 
-Screenshot input:
-![Screenshot from Windows commandline](https://github.com/t-markmann/nc-userimporter/blob/master/assets/screenshot.png)
-
 ## Instructions
 
 1. Download and extract the zip-file
@@ -25,7 +22,7 @@ Screenshot input:
 
 ## Output
 
-Screenshot output:
+Screenshot output example:
 
 ![Generated PDF file with user credentials](https://github.com/t-markmann/nc-userimporter/blob/master/assets/screenshot_pdfoutput.png)
 
@@ -34,7 +31,6 @@ Screenshot output:
 ## ToDo
 
 * improve documentation of features https://github.com/t-markmann/nc-userimporter/wiki#todo-documentation
-* refactoring / clean code
 
 Open features, not yet implemented (help appreciated): 
 * read config from CLI-input if config-file is empty; update config.xml with input values?
