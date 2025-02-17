@@ -4,6 +4,7 @@ from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Image, Page
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.enums import TA_JUSTIFY
 import qrcode
+from html import escape
 
 def generate_qr_code(data, output_dir, filename):
     """
@@ -119,7 +120,7 @@ def _build_single_user_section(story, styles, user_data, qr_code_path, config_nc
     ptext = f"<font size=14>{lang.get('output_handler_password', 'Missing translation string for: output_handler_password')}:</font>"
     story.append(Paragraph(ptext, styles["Normal"]))
     story.append(Spacer(1, 12))
-    ptext = f"<font size=14>{user_data['password']}</font>"
+    ptext = f"<font name=\"courier\" size=14>{escape(user_data['password'])}</font>"
     story.append(Paragraph(ptext, styles["Normal"]))
     story.append(Spacer(1, 24))
 
