@@ -132,7 +132,7 @@ def create_users_and_groups(csv_data, config, nc_api):
             quota = row.get('quota', '1GB')
 
             if not password and config['generate_password'] == 'yes':
-                password = PasswordGenerator(config['password_length'])
+                password = PasswordGenerator(config['password_length']).generate()
 
             logging.info(f"Creating user '{username}' with display name '{displayname}' and email '{email}'")
             response = nc_api.add_user(username, password, displayname, email, groups, quota, config['user_language'])
